@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260916-unified">
 </head>
 <body>
   <div id="loginView" class="login-wrap">
@@ -32,6 +32,7 @@
         <button id="loginBtn" class="btn primary" type="submit" style="width:100%;margin-top:16px"><i class="fa-solid fa-right-to-bracket"></i> Ingresar</button>
         <div id="loginError" class="error hidden"></div>
       </form>
+      <p class="form-note" style="text-align:center"><a href="admin.html">Acceso administrativo con correo y contraseña</a></p>
       <p class="form-note" style="text-align:center;margin:16px 0 0">¿Aún no eres integrante? <a href="https://registro.movidasst.com/" style="color:var(--teal);font-weight:900">Regístrate aquí</a>.</p>
     </div>
   </div>
@@ -78,7 +79,7 @@
       <section class="section">
         <div class="container">
           <div id="view-consultas" class="view active">
-            <div class="section-head"><div><h2 class="section-title">Consultas activas</h2><p class="section-desc">Tu experiencia ayuda a decidir qué construimos como comunidad.</p></div></div>
+            <div class="section-head"><div><h2 class="section-title">Tu voz construye la comunidad</h2><p class="section-desc">Tu experiencia ayuda a decidir qué construimos como comunidad.</p></div></div>
             <div id="consultasGrid" class="cards"></div>
           </div>
           <div id="view-resultados" class="view">
@@ -111,6 +112,6 @@
   <div id="toast" class="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=20260916-unified"></script>
 </body>
 </html>
