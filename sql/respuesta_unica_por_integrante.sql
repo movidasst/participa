@@ -121,7 +121,8 @@ declare
   v_promedio numeric;
 begin
   select * into v_s from private.participa_sesion_actual(p_token);
-  if v_s.integrante_id is null then return jsonb_build_object('ok',false,'message','Sesión vencida.'); end if;
+  v_s.es_admin := coalesce(private.es_admin_gestion(),false);
+  if v_s.integrante_id is null and not v_s.es_admin then return jsonb_build_object('ok',false,'message','Sesión vencida.'); end if;
   select * into v_q from public.participa_consultas where id=p_consulta;
   if v_q.id is null then return jsonb_build_object('ok',false,'message','Consulta no disponible.'); end if;
 
