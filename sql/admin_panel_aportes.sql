@@ -12,7 +12,7 @@ declare
   v_aportes jsonb;
 begin
   select * into v_s from private.participa_sesion_actual(p_token);
-  if v_s.integrante_id is null or not v_s.es_admin then
+  if not coalesce(private.es_admin_gestion(),false) then
     return jsonb_build_object('ok',false,'message','No tienes permisos de administración.');
   end if;
 
