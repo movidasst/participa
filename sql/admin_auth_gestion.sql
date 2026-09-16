@@ -335,3 +335,6 @@ begin
   return jsonb_build_object('ok',true,'campanas',v_campanas,'consultas',v_consultas,'aportes',v_aportes);
 end;
 $function$;
+
+revoke execute on function public.participa_admin_panel(uuid),public.participa_admin_guardar_consulta(uuid,jsonb),public.participa_admin_guardar_campana(uuid,jsonb),public.participa_admin_cambiar_estado(uuid,uuid,text) from public,anon;
+grant execute on function public.participa_admin_panel(uuid),public.participa_admin_guardar_consulta(uuid,jsonb),public.participa_admin_guardar_campana(uuid,jsonb),public.participa_admin_cambiar_estado(uuid,uuid,text) to authenticated;
