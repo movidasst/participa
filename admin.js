@@ -17,7 +17,7 @@
     $('adminContent').classList.add('hidden');$('adminLoginView').classList.remove('hidden');$('adminLogout').classList.add('hidden');
     $('adminLoginError').textContent=message;$('adminLoginError').classList.toggle('hidden',!message);
     $('adminName').textContent='La Movida de SST Plus';
-    state.panel=null;$('aportesList').innerHTML='';$('aportesSummary').textContent='';
+    closeAdminResults();state.panel=null;$('aportesList').innerHTML='';$('aportesSummary').textContent='';
   }
   async function init(){
     const {data:{session}}=await client.auth.getSession();
@@ -65,11 +65,41 @@
     finally{btn.disabled=false;}
   }
 
+
+  function closeAdminResults(){
+    state.resultsId=null;$('adminResultsModal').classList.add('hidden');$('adminResultsModal').setAttribute('aria-hidden','true');$('adminResultsBody').innerHTML='';
+    if(state.resultsTrigger?.isConnected)state.resultsTrigger.focus();
+  }
+  function adminResultQuestion(q){
+    const number=v=>Number.isFinite(Number(v))?Number(v):0;
+    if(['single','multiple','yes_no'].includes(q.tipo)){
+      return `<section class="question"><h4>${esc(q.pregunta)}</h4><p class="form-note">${number(q.respuestas)} integrante(s) respondieron esta pregunta.${q.tipo==='multiple'?' Se podían elegir varias opciones; los porcentajes pueden sumar más de 100 %.':''}</p>${(q.opciones||[]).map(o=>`<div class="result-row"><div class="result-head" style="flex-wrap:wrap"><span style="overflow-wrap:anywhere">${esc(o.etiqueta)}</span><span>${number(o.votos)} voto(s) · ${number(o.porcentaje)} %</span></div><div class="bar"><span style="width:${Math.max(0,Math.min(100,number(o.porcentaje)))}%"></span></div></div>`).join('')}</section>`;
+    }
+    if(q.tipo==='scale')return `<section class="question"><h4>${esc(q.pregunta)}</h4><p style="font-size:1.5rem;color:var(--teal);font-weight:800">Promedio: ${q.promedio==null?'Sin respuestas':esc(q.promedio)}</p><p class="form-note">Escala de ${esc(q.min)} a ${esc(q.max)} · ${number(q.respuestas)} respuestas.</p></section>`;
+    return `<section class="question"><h4>${esc(q.pregunta)}</h4><p>${number(q.respuestas)} respuesta(s) abierta(s).</p><p class="form-note">Usa «Leer respuestas abiertas» para revisar su contenido.</p></section>`;
+  }
+  async function openAdminResults(id,trigger=null){
+    state.resultsId=id;if(trigger)state.resultsTrigger=trigger;
+    const base=state.panel?.consultas?.find(q=>q.id===id);
+    $('adminResultsTitle').textContent=base?.titulo||'Resultados de la encuesta';
+    $('adminResultsModal').classList.remove('hidden');$('adminResultsModal').setAttribute('aria-hidden','false');$('adminResultsClose').focus();
+    $('adminResultsBody').innerHTML='<div class="empty">Cargando resultados…</div>';
+    $('adminResultsRefresh').disabled=true;
+    try{
+      const data=await rpc('participa_resultados',{p_token:null,p_consulta:id});
+      if(state.resultsId!==id)return;
+      if(!data?.ok)throw new Error(data?.message||'No se pudieron cargar los resultados.');
+      $('adminResultsSubtitle').textContent='Actualizado: '+new Intl.DateTimeFormat('es-CL',{dateStyle:'short',timeStyle:'medium'}).format(new Date());
+      $('adminResultsBody').innerHTML=`<div class="panel" style="box-shadow:none;background:#eff8f9"><strong style="font-size:1.5rem;color:var(--navy)">${Number(data.participantes)||0} participante(s)</strong><p class="form-note">Una respuesta por integrante. Las ediciones reemplazan los votos anteriores.</p></div>${(data.preguntas||[]).map(adminResultQuestion).join('')}`;
+    }catch(err){console.error(err);if(state.resultsId===id)$('adminResultsBody').innerHTML=`<div class="error">${esc(err.message||'No se pudieron cargar los resultados.')} Puedes reintentar con «Actualizar resultados».</div>`;}
+    finally{if(state.resultsId===id)$('adminResultsRefresh').disabled=false;}
+  }
+
   function renderCampaigns(){
     $('campaignList').innerHTML=(state.panel.campanas||[]).map(c=>`<div class="admin-item"><div class="admin-item-head"><div><h3>${esc(c.titulo)}</h3><p>${esc(c.subtitulo||'')} · ${c.consultas} consultas · ${c.participantes} participantes</p></div><span class="badge ${c.estado==='active'?'active':c.estado==='closed'?'closed':'scheduled'}">${esc(c.estado)}</span></div><div class="toolbar" style="margin-top:10px"><button class="btn soft" data-edit-campaign="${c.id}"><i class="fa-solid fa-pen"></i>Editar campaña</button></div></div>`).join('')||'<div class="empty">No hay campañas.</div>';
   }
   function renderConsultas(){
-    $('consultaList').innerHTML=(state.panel.consultas||[]).map(q=>`<div class="admin-item"><div class="admin-item-head"><div><h3>${esc(q.titulo)}</h3><p>${esc(q.campana)} · ${q.participantes} participantes · ${q.preguntas} preguntas</p></div><span class="badge ${q.estado==='active'?'active':q.estado==='closed'?'closed':'scheduled'}">${esc(q.estado)}</span></div><div class="chips"><span class="chip">${esc(q.tipo)}</span>${q.puntos_habilitados?`<span class="chip">${q.puntos_valor} XP</span>`:''}</div><div class="toolbar" style="margin-top:10px"><button class="btn soft" data-edit="${q.id}"><i class="fa-solid fa-pen"></i>Editar</button>${q.estado!=='active'?`<button class="btn teal" data-status="active" data-id="${q.id}">Activar</button>`:''}${q.estado!=='closed'?`<button class="btn ghost" data-status="closed" data-id="${q.id}">Cerrar</button>`:''}<button class="btn ghost" data-status="archived" data-id="${q.id}">Archivar</button></div></div>`).join('')||'<div class="empty">No hay consultas creadas.</div>';
+    $('consultaList').innerHTML=(state.panel.consultas||[]).map(q=>`<div class="admin-item"><div class="admin-item-head"><div><h3>${esc(q.titulo)}</h3><p>${esc(q.campana)} · ${q.participantes} participantes · ${q.preguntas} preguntas</p></div><span class="badge ${q.estado==='active'?'active':q.estado==='closed'?'closed':'scheduled'}">${esc(q.estado)}</span></div><div class="chips"><span class="chip">${esc(q.tipo)}</span>${q.puntos_habilitados?`<span class="chip">${q.puntos_valor} XP</span>`:''}</div><div class="toolbar" style="margin-top:10px"><button class="btn teal" data-admin-results="${q.id}"><i class="fa-solid fa-chart-column"></i> Ver resultados</button><button class="btn soft" data-edit="${q.id}"><i class="fa-solid fa-pen"></i>Editar</button>${q.estado!=='active'?`<button class="btn teal" data-status="active" data-id="${q.id}">Activar</button>`:''}${q.estado!=='closed'?`<button class="btn ghost" data-status="closed" data-id="${q.id}">Cerrar</button>`:''}<button class="btn ghost" data-status="archived" data-id="${q.id}">Archivar</button></div></div>`).join('')||'<div class="empty">No hay consultas creadas.</div>';
   }
 
   function questionTemplate(data={}){
@@ -110,11 +140,16 @@
     try{const d=await rpc('participa_admin_guardar_campana',{p_token:state.token,p_payload:payload});if(!d?.ok)throw new Error(d?.message||'No se pudo guardar.');$('campaignModal').classList.add('hidden');toast('Campaña guardada.');await loadPanel();resetForm()}catch(err){console.error(err);toast(err.message||'Error al guardar campaña.')}
   }
 
-  document.addEventListener('click',e=>{const edit=e.target.closest('[data-edit]');if(edit)editConsulta(edit.dataset.edit);const st=e.target.closest('[data-status]');if(st)changeStatus(st.dataset.id,st.dataset.status);const ec=e.target.closest('[data-edit-campaign]');if(ec)openCampaignModal(ec.dataset.editCampaign)});
+  document.addEventListener('click',e=>{const results=e.target.closest('[data-admin-results]');if(results)openAdminResults(results.dataset.adminResults,results);const edit=e.target.closest('[data-edit]');if(edit)editConsulta(edit.dataset.edit);const st=e.target.closest('[data-status]');if(st)changeStatus(st.dataset.id,st.dataset.status);const ec=e.target.closest('[data-edit-campaign]');if(ec)openCampaignModal(ec.dataset.editCampaign)});
   $('consultaTitulo').addEventListener('input',()=>{if(!$('consultaId').value)$('consultaSlug').value=slugify($('consultaTitulo').value)});$('campaignTitle').addEventListener('input',()=>{if(!$('campaignId').value)$('campaignSlug').value=slugify($('campaignTitle').value)});
   $('addQuestion').addEventListener('click',()=>addQuestion());$('newConsulta').addEventListener('click',resetForm);$('consultaForm').addEventListener('submit',saveConsulta);$('newCampaign').addEventListener('click',()=>openCampaignModal());$('campaignClose').addEventListener('click',()=>$('campaignModal').classList.add('hidden'));$('campaignForm').addEventListener('submit',saveCampaign);
   $('aportesConsulta').addEventListener('change',renderAportes);$('aportesSearch').addEventListener('input',renderAportes);$('refreshAportes').addEventListener('click',refreshAportes);
   $('adminLoginForm').addEventListener('submit',adminLogin);$('adminLogout').addEventListener('click',async()=>{await client.auth.signOut();showAdminLogin();});
   client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')showAdminLogin();});
+  $('adminResultsClose').addEventListener('click',closeAdminResults);
+  $('adminResultsRefresh').addEventListener('click',()=>{if(state.resultsId)openAdminResults(state.resultsId);});
+  $('adminResultsModal').addEventListener('click',e=>{if(e.target===$('adminResultsModal'))closeAdminResults();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.resultsId)closeAdminResults();});
+  $('adminResultsAportes').addEventListener('click',()=>{const id=state.resultsId;closeAdminResults();$('aportesConsulta').value=id;renderAportes();$('aportes').scrollIntoView({behavior:'smooth'});});
   init();
 })();
