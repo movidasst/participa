@@ -85,7 +85,7 @@
       const editable=data.consulta.estado==='active' && (!data.respondida || data.consulta.permitir_editar);
       $('modalBody').innerHTML=`${data.consulta.descripcion?`<p style="color:var(--muted);line-height:1.55;margin-top:0">${esc(data.consulta.descripcion)}</p>`:''}<form id="voteForm">${data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640' && editable ? renderWizard(data.preguntas) : data.preguntas.map(renderQuestion).join('')}${editable?`<button class="btn primary" type="submit" style="width:100%"><i class="fa-solid fa-paper-plane"></i>${data.respondida?'Actualizar mi respuesta':'Enviar mi participación'}</button>`:`<div class="panel"><strong>Tu respuesta ya fue registrada.</strong></div>`}</form><div id="inlineResults" style="margin-top:18px"></div>`;
       $('consultaModal').classList.remove('hidden'); $('consultaModal').setAttribute('aria-hidden','false');
-      if(editable){ $('voteForm').addEventListener('submit',submitVote);if(data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640')showWizardStep(0); } if(data.respondida) await loadResults(id,'inlineResults',false); subscribeResults(id);
+      if(editable){ $('voteForm').addEventListener('submit',submitVote);if(data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640')showWizardStep(0); } if(data.respondida){ await loadResults(id,'inlineResults',false); subscribeResults(id); }
     }catch(err){ console.error(err); toast(err.message||'No fue posible abrir la consulta.'); }
   }
 
@@ -138,6 +138,7 @@
     try{
       const res=await rpc('participa_enviar_respuesta',{p_token:state.token,p_consulta:data.consulta.id,p_respuestas:answers}); if(!res?.ok) throw new Error(res?.message||'No se pudo guardar.');
       toast(res.puntos_otorgados>0?`Participación guardada · +${res.puntos_otorgados} XP`:'Participación actualizada'); await bootstrap();
+      if(state.channel){client.removeChannel(state.channel);state.channel=null;}
       $('modalTitle').textContent='¡Gracias por participar!';$('modalSubtitle').textContent='Tu voz ayuda a construir el Octubre Fest.';
       $('modalBody').innerHTML=`<div class="participation-done"><i class="fa-solid fa-circle-check"></i><h3>Tu participación quedó registrada</h3><p>Ya puedes conocer las preferencias de la comunidad. Puedes volver y editar tu respuesta mientras la consulta esté abierta.</p>${res.puntos_otorgados>0?`<span class="chip">+${res.puntos_otorgados} XP</span>`:''}<div class="festival-actions"><button class="btn teal" data-result="${data.consulta.id}">Ver resultados</button><button class="btn ghost" type="button" data-close-modal>Listo</button></div></div>`;
     }catch(err){ console.error(err); toast(err.message||'No se pudo guardar la respuesta.'); }
