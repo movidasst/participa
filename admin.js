@@ -4,8 +4,8 @@
   const SUPABASE_KEY='sb_publishable_bRnkA6PA8-v073nrw9zxiQ_8rVGiOn1';
   const STORAGE_KEY='movidasst_participa_session';
   const $=id=>document.getElementById(id);
-  const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-  const state={token:localStorage.getItem(STORAGE_KEY),panel:null,editing:null};
+  const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storageKey:'movidasst_participa_admin_auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  const state={token:null,panel:null,editing:null};
   function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
   function toast(m){const e=$('toast');e.textContent=m;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2800)}
   async function rpc(name,args={}){const {data,error}=await client.rpc(name,args);if(error)throw error;return data}
@@ -13,14 +13,28 @@
   function iso(v){return v?new Date(v).toISOString():null}
   function localDate(v){if(!v)return'';const d=new Date(v);const pad=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`}
 
+  function showAdminLogin(message=''){
+    $('adminContent').classList.add('hidden');$('adminLoginView').classList.remove('hidden');$('adminLogout').classList.add('hidden');
+    $('adminLoginError').textContent=message;$('adminLoginError').classList.toggle('hidden',!message);
+    $('adminName').textContent='La Movida de SST Plus';
+    state.panel=null;$('aportesList').innerHTML='';$('aportesSummary').textContent='';
+  }
   async function init(){
-    if(!state.token){location.href='index.html';return}
+    const {data:{session}}=await client.auth.getSession();
+    if(!session){showAdminLogin();return;}
     try{
-      const boot=await rpc('participa_bootstrap',{p_token:state.token});
-      if(!boot?.ok||!boot.admin){location.href='index.html';return}
-      $('adminName').textContent=boot.perfil?.nombre||'Administrador';
-      await loadPanel(); resetForm();
-    }catch(err){console.error(err);location.href='index.html'}
+      await loadPanel();resetForm();$('adminName').textContent=session.user.email||'Administrador';
+      $('adminLoginView').classList.add('hidden');$('adminContent').classList.remove('hidden');$('adminLogout').classList.remove('hidden');
+      if(location.hash==='#aportes')$('aportes').scrollIntoView();
+    }catch(err){console.error(err);await client.auth.signOut();showAdminLogin('La cuenta no tiene permiso de administración o no se pudo cargar el panel.');}
+  }
+  async function adminLogin(ev){
+    ev.preventDefault();const btn=$('adminLoginBtn');btn.disabled=true;$('adminLoginError').classList.add('hidden');
+    try{
+      const {error}=await client.auth.signInWithPassword({email:$('adminEmail').value.trim(),password:$('adminPassword').value});
+      if(error)throw error;$('adminPassword').value='';await init();
+    }catch(err){console.error(err);showAdminLogin('No fue posible ingresar. Revisa tu correo y contraseña.');}
+    finally{btn.disabled=false;}
   }
   async function loadPanel(){
     const data=await rpc('participa_admin_panel',{p_token:state.token});if(!data?.ok)throw new Error(data?.message||'No se pudo cargar el panel.');state.panel=data;renderCampaigns();renderConsultas();renderAportesFilters();renderAportes();
@@ -100,5 +114,7 @@
   $('consultaTitulo').addEventListener('input',()=>{if(!$('consultaId').value)$('consultaSlug').value=slugify($('consultaTitulo').value)});$('campaignTitle').addEventListener('input',()=>{if(!$('campaignId').value)$('campaignSlug').value=slugify($('campaignTitle').value)});
   $('addQuestion').addEventListener('click',()=>addQuestion());$('newConsulta').addEventListener('click',resetForm);$('consultaForm').addEventListener('submit',saveConsulta);$('newCampaign').addEventListener('click',()=>openCampaignModal());$('campaignClose').addEventListener('click',()=>$('campaignModal').classList.add('hidden'));$('campaignForm').addEventListener('submit',saveCampaign);
   $('aportesConsulta').addEventListener('change',renderAportes);$('aportesSearch').addEventListener('input',renderAportes);$('refreshAportes').addEventListener('click',refreshAportes);
+  $('adminLoginForm').addEventListener('submit',adminLogin);$('adminLogout').addEventListener('click',async()=>{await client.auth.signOut();showAdminLogin();});
+  client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')showAdminLogin();});
   init();
 })();
