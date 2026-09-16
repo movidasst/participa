@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#00205b">
+  <meta name="description" content="PARTICIPA · Plataforma de participación de La Movida de SST Plus">
+  <title>PARTICIPA | La Movida de SST Plus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="loginView" class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="https://drive.google.com/thumbnail?id=1Qy0e_J7IUXfJVLhLDNUJNuHOmg3_M0fh&sz=w300" alt="La Movida de SST Plus">
+        <h1>PARTICIPA</h1>
+        <p>La plataforma de consulta y participación de <strong>La Movida de SST Plus</strong>.</p>
+      </div>
+      <div class="panel" style="box-shadow:none">
+        <strong style="color:var(--navy)"><i class="fa-solid fa-user-shield"></i> Solo para integrantes registrados</strong>
+        <p class="form-note">Usa tu documento o cédula y el código de 5 caracteres de tu credencial de La Movida.</p>
+      </div>
+      <form id="loginForm">
+        <div class="field"><label for="documento">Documento o cédula</label><input id="documento" autocomplete="username" inputmode="text" maxlength="24" required></div>
+        <div class="field"><label for="codigo">Código de integrante</label><input id="codigo" type="password" autocomplete="current-password" maxlength="5" required style="text-transform:uppercase"></div>
+        <button id="loginBtn" class="btn primary" type="submit" style="width:100%;margin-top:16px"><i class="fa-solid fa-right-to-bracket"></i> Ingresar</button>
+        <div id="loginError" class="error hidden"></div>
+      </form>
+      <p class="form-note" style="text-align:center;margin:16px 0 0">¿Aún no eres integrante? <a href="https://registro.movidasst.com/" style="color:var(--teal);font-weight:900">Regístrate aquí</a>.</p>
+    </div>
+  </div>
+
+  <div id="appView" class="hidden">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#/inicio">
+          <img src="https://drive.google.com/thumbnail?id=1Qy0e_J7IUXfJVLhLDNUJNuHOmg3_M0fh&sz=w200" alt="La Movida de SST Plus">
+          <div><strong>PARTICIPA</strong><span>La Movida de SST Plus</span></div>
+        </a>
+        <div class="header-actions">
+          <a id="adminLink" class="icon-btn hidden" href="admin.html" title="Administración"><i class="fa-solid fa-gear"></i></a>
+          <img id="userAvatar" class="avatar" alt="">
+          <button id="logoutBtn" class="icon-btn" title="Cerrar sesión"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="hero-shell">
+            <div class="hero-grid">
+              <div>
+                <span id="heroEyebrow" class="eyebrow"><i class="fa-solid fa-people-group"></i> PARTICIPA · LA MOVIDA</span>
+                <h1><span id="heroTitle">Octubre Fest 2026</span><br><small id="heroSubtitle" style="font-size:.43em;color:white">Tú también decides qué hacemos</small></h1>
+                <p id="heroDescription">Consulta, vota y ayuda a construir las actividades de nuestra comunidad.</p>
+                <div class="hero-actions">
+                  <button class="btn yellow" data-nav="consultas"><i class="fa-solid fa-check-to-slot"></i> Participar ahora</button>
+                  <button class="btn ghost" data-nav="resultados"><i class="fa-solid fa-chart-column"></i> Ver resultados</button>
+                </div>
+              </div>
+              <div class="hero-kpis">
+                <div class="hero-kpi"><strong id="kpiActive">0</strong><span>consultas</span></div>
+                <div class="hero-kpi"><strong id="kpiAnswered">0</strong><span>respondidas</span></div>
+                <div class="hero-kpi"><strong id="kpiPeople">0</strong><span>participaciones</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div id="view-consultas" class="view active">
+            <div class="section-head"><div><h2 class="section-title">Consultas activas</h2><p class="section-desc">Tu experiencia ayuda a decidir qué construimos como comunidad.</p></div></div>
+            <div id="consultasGrid" class="cards"></div>
+          </div>
+          <div id="view-resultados" class="view">
+            <div class="section-head"><div><h2 class="section-title">Resultados</h2><p class="section-desc">Resultados disponibles según la configuración de cada consulta.</p></div><span class="live-dot">Actualización automática</span></div>
+            <div id="resultadosGrid" class="cards"></div>
+          </div>
+          <div id="view-miperfil" class="view">
+            <div class="section-head"><div><h2 class="section-title">Mi participación</h2><p class="section-desc">Resumen de tu actividad dentro de PARTICIPA.</p></div></div>
+            <div id="miPanel" class="panel"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer"><div class="container"><strong>La Movida de SST Plus</strong> · De la Reacción a la Prevención<br>www.movidasst.com</div></footer>
+
+    <nav class="mobile-nav">
+      <button class="active" data-nav="consultas"><i class="fa-solid fa-check-to-slot"></i><span>Participar</span></button>
+      <button data-nav="resultados"><i class="fa-solid fa-chart-column"></i><span>Resultados</span></button>
+      <button data-nav="miperfil"><i class="fa-regular fa-user"></i><span>Mi actividad</span></button>
+    </nav>
+  </div>
+
+  <div id="consultaModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head"><div><h2 id="modalTitle">Consulta</h2><p id="modalSubtitle"></p></div><button id="modalClose" class="icon-btn modal-close"><i class="fa-solid fa-xmark"></i></button></div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
