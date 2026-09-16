@@ -150,6 +150,6 @@
   $('adminResultsRefresh').addEventListener('click',()=>{if(state.resultsId)openAdminResults(state.resultsId);});
   $('adminResultsModal').addEventListener('click',e=>{if(e.target===$('adminResultsModal'))closeAdminResults();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.resultsId)closeAdminResults();});
-  $('adminResultsAportes').addEventListener('click',()=>{const id=state.resultsId;closeAdminResults();$('aportesConsulta').value=id;renderAportes();$('aportes').scrollIntoView({behavior:'smooth'});});
+  $('adminResultsAportes').addEventListener('click',async()=>{const id=state.resultsId;closeAdminResults();$('aportesConsulta').value=id;try{await loadPanel();$('aportes').scrollIntoView({behavior:'smooth'});}catch(err){console.error(err);toast('No se pudieron actualizar los aportes. Intenta nuevamente.');}});
   init();
 })();
