@@ -23,9 +23,34 @@
     }catch(err){console.error(err);location.href='index.html'}
   }
   async function loadPanel(){
-    const data=await rpc('participa_admin_panel',{p_token:state.token});if(!data?.ok)throw new Error(data?.message||'No se pudo cargar el panel.');state.panel=data;renderCampaigns();renderConsultas();
+    const data=await rpc('participa_admin_panel',{p_token:state.token});if(!data?.ok)throw new Error(data?.message||'No se pudo cargar el panel.');state.panel=data;renderCampaigns();renderConsultas();renderAportesFilters();renderAportes();
     $('campanaId').innerHTML=(data.campanas||[]).map(c=>`<option value="${c.id}">${esc(c.titulo)}</option>`).join('');
   }
+
+  function renderAportesFilters(){
+    const value=$('aportesConsulta').value;
+    $('aportesConsulta').innerHTML='<option value="">Todas las consultas</option>'+(state.panel.consultas||[]).map(q=>`<option value="${esc(q.id)}">${esc(q.titulo)}</option>`).join('');
+    if((state.panel.consultas||[]).some(q=>q.id===value))$('aportesConsulta').value=value;
+  }
+  function renderAportes(){
+    const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const query=normalize($('aportesSearch').value.trim()),consulta=$('aportesConsulta').value;
+    const all=state.panel.aportes||[];
+    const rows=all.filter(a=>(!consulta||a.consulta_id===consulta)&&(!query||normalize([a.texto,a.nombre,a.pregunta,a.consulta,a.campana].join(' ')).includes(query)));
+    $('aportesSummary').textContent=`${rows.length} aporte(s) mostrado(s) de ${all.length} en total.`;
+    $('aportesList').innerHTML=rows.length?rows.map(a=>{
+      const date=new Date(a.fecha);
+      const fecha=Number.isNaN(date.getTime())?'':new Intl.DateTimeFormat('es-CL',{dateStyle:'medium',timeStyle:'short'}).format(date);
+      return `<article class="admin-item"><div class="admin-item-head" style="flex-wrap:wrap"><div><h3>${esc(a.nombre||'Integrante')}</h3><p>${esc(a.campana)} · ${esc(a.consulta)}</p></div><time datetime="${esc(a.fecha)}" class="form-note">${esc(fecha)}</time></div><p style="font-size:.9rem;color:var(--teal);font-weight:700;margin-top:12px">${esc(a.pregunta)}</p><div style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:1rem;margin-top:8px">${esc(a.texto)}</div></article>`;
+    }).join(''):`<div class="empty">${all.length?'No hay aportes que coincidan con estos filtros.':'Todavía no hay propuestas ni respuestas abiertas. Aparecerán aquí cuando los integrantes las envíen.'}</div>`;
+  }
+  async function refreshAportes(){
+    const btn=$('refreshAportes');btn.disabled=true;
+    try{await loadPanel();toast('Aportes actualizados.')}
+    catch(err){console.error(err);toast('No se pudieron actualizar los aportes. Intenta nuevamente.');}
+    finally{btn.disabled=false;}
+  }
+
   function renderCampaigns(){
     $('campaignList').innerHTML=(state.panel.campanas||[]).map(c=>`<div class="admin-item"><div class="admin-item-head"><div><h3>${esc(c.titulo)}</h3><p>${esc(c.subtitulo||'')} · ${c.consultas} consultas · ${c.participantes} participantes</p></div><span class="badge ${c.estado==='active'?'active':c.estado==='closed'?'closed':'scheduled'}">${esc(c.estado)}</span></div><div class="toolbar" style="margin-top:10px"><button class="btn soft" data-edit-campaign="${c.id}"><i class="fa-solid fa-pen"></i>Editar campaña</button></div></div>`).join('')||'<div class="empty">No hay campañas.</div>';
   }
@@ -74,5 +99,6 @@
   document.addEventListener('click',e=>{const edit=e.target.closest('[data-edit]');if(edit)editConsulta(edit.dataset.edit);const st=e.target.closest('[data-status]');if(st)changeStatus(st.dataset.id,st.dataset.status);const ec=e.target.closest('[data-edit-campaign]');if(ec)openCampaignModal(ec.dataset.editCampaign)});
   $('consultaTitulo').addEventListener('input',()=>{if(!$('consultaId').value)$('consultaSlug').value=slugify($('consultaTitulo').value)});$('campaignTitle').addEventListener('input',()=>{if(!$('campaignId').value)$('campaignSlug').value=slugify($('campaignTitle').value)});
   $('addQuestion').addEventListener('click',()=>addQuestion());$('newConsulta').addEventListener('click',resetForm);$('consultaForm').addEventListener('submit',saveConsulta);$('newCampaign').addEventListener('click',()=>openCampaignModal());$('campaignClose').addEventListener('click',()=>$('campaignModal').classList.add('hidden'));$('campaignForm').addEventListener('submit',saveCampaign);
+  $('aportesConsulta').addEventListener('change',renderAportes);$('aportesSearch').addEventListener('input',renderAportes);$('refreshAportes').addEventListener('click',refreshAportes);
   init();
 })();
