@@ -40,7 +40,7 @@
     try{
       const data=await rpc('participa_bootstrap',{p_token:state.token});
       if(!data?.ok){ clearToken(); showLogin(data?.message||'Tu sesión venció.'); return; }
-      state.data=data; showApp(); renderHeader(); renderHero(); renderConsultas(); renderResultadosIndex(); renderMiPerfil();
+      state.data=data; showApp(); renderHeader(); renderHero(); renderConsultas(); renderMiPerfil();
     }catch(err){ console.error(err); showLogin('No pudimos cargar PARTICIPA. Intenta nuevamente.'); }
   }
 
@@ -56,18 +56,15 @@
   }
 
   function octoberCard(q){
-    return `<article class="festival-card"><div class="festival-main"><div class="festival-kicker">${statusBadge(q.estado)}<span>OCTUBRE FEST 2026</span></div><h3>Construyamos juntos<br>el Octubre Fest</h3><p>Cuéntanos qué te gustaría hacer y ayúdanos a preparar las actividades de la comunidad.</p><div class="festival-meta"><span><i class="fa-solid fa-users"></i> ${Number(q.participantes||0)} participantes</span>${q.puntos_habilitados?`<span><i class="fa-solid fa-star"></i> ${q.puntos_valor} XP por participar</span>`:''}${q.cierra_at?`<span><i class="fa-regular fa-calendar"></i> Hasta ${esc(fmtDate(q.cierra_at))}</span>`:''}</div><div class="festival-actions">${q.estado==='active'?`<button class="btn teal" data-open="${q.id}">${q.respondida?'Revisar mi participación':'Quiero participar'} <i class="fa-solid fa-arrow-right"></i></button>`:''}<button class="btn ghost" data-result="${q.id}">Ver resultados</button></div>${q.respondida?'<p class="festival-saved"><i class="fa-solid fa-circle-check"></i> Tu participación está registrada.</p>':''}</div><div class="festival-route"><p class="route-caption">Una consulta · Tres pasos</p><div class="route-item"><span>01</span><div><strong>Las actividades</strong><p>Elige hasta tres dinámicas y propón tu propia idea.</p></div></div><div class="route-item"><span>02</span><div><strong>Los temas</strong><p>Cuéntanos sobre qué quieres aprender y debatir.</p></div></div><div class="route-item"><span>03</span><div><strong>Tu disponibilidad</strong><p>Define el tiempo y la modalidad que te acomodan.</p></div></div></div></article>`;
+    return `<article class="festival-card"><div class="festival-main"><div class="festival-kicker">${statusBadge(q.estado)}<span>OCTUBRE FEST 2026</span></div><h3>Construyamos juntos<br>el Octubre Fest</h3><p>Cuéntanos qué te gustaría hacer y ayúdanos a preparar las actividades de la comunidad.</p><div class="festival-meta"><span><i class="fa-solid fa-users"></i> ${Number(q.participantes||0)} participantes</span>${q.puntos_habilitados?`<span><i class="fa-solid fa-star"></i> ${q.puntos_valor} XP por participar</span>`:''}${q.cierra_at?`<span><i class="fa-regular fa-calendar"></i> Hasta ${esc(fmtDate(q.cierra_at))}</span>`:''}</div><div class="festival-actions">${q.estado==='active'?`<button class="btn teal" data-open="${q.id}">${q.respondida?'Revisar mi participación':'Quiero participar'} <i class="fa-solid fa-arrow-right"></i></button>`:''}</div>${q.respondida?'<p class="festival-saved"><i class="fa-solid fa-circle-check"></i> Tu participación está registrada.</p>':''}</div><div class="festival-route"><p class="route-caption">Una consulta · Tres pasos</p><div class="route-item"><span>01</span><div><strong>Las actividades</strong><p>Elige hasta tres dinámicas y propón tu propia idea.</p></div></div><div class="route-item"><span>02</span><div><strong>Los temas</strong><p>Cuéntanos sobre qué quieres aprender y debatir.</p></div></div><div class="route-item"><span>03</span><div><strong>Tu disponibilidad</strong><p>Define el tiempo y la modalidad que te acomodan.</p></div></div></div></article>`;
   }
   function card(q){
     if(q.slug==='actividades-octubre-fest')return octoberCard(q);
-    const action=q.estado==='active'?`<button class="btn teal" data-open="${q.id}"><i class="fa-solid fa-check-to-slot"></i>${q.respondida?'Ver / cambiar':'Participar'}</button>`:`<button class="btn ghost" data-result="${q.id}"><i class="fa-solid fa-chart-column"></i>Resultados</button>`;
-    return `<article class="card"><div class="card-accent"></div><div class="card-body"><div class="card-top"><div><span class="chip"><i class="fa-solid fa-users"></i>${Number(q.participantes||0)} participantes</span><h3>${esc(q.titulo)}</h3></div>${statusBadge(q.estado)}</div><p>${esc(q.resumen||'Consulta de la comunidad.')}</p><div class="chips">${q.puntos_habilitados?`<span class="chip"><i class="fa-solid fa-star"></i>${q.puntos_valor} XP</span>`:''}${q.respondida?'<span class="chip"><i class="fa-solid fa-circle-check"></i>Ya participaste</span>':''}${q.cierra_at?`<span class="chip"><i class="fa-regular fa-calendar"></i>Hasta ${esc(fmtDate(q.cierra_at))}</span>`:''}</div><div class="card-actions">${action}<button class="btn soft" data-result="${q.id}"><i class="fa-solid fa-chart-simple"></i>Ver resultados</button></div></div></article>`;
+    const action=q.estado==='active'?`<button class="btn teal" data-open="${q.id}"><i class="fa-solid fa-check-to-slot"></i>${q.respondida?'Ver / cambiar':'Participar'}</button>`:``;
+    return `<article class="card"><div class="card-accent"></div><div class="card-body"><div class="card-top"><div><span class="chip"><i class="fa-solid fa-users"></i>${Number(q.participantes||0)} participantes</span><h3>${esc(q.titulo)}</h3></div>${statusBadge(q.estado)}</div><p>${esc(q.resumen||'Consulta de la comunidad.')}</p><div class="chips">${q.puntos_habilitados?`<span class="chip"><i class="fa-solid fa-star"></i>${q.puntos_valor} XP</span>`:''}${q.respondida?'<span class="chip"><i class="fa-solid fa-circle-check"></i>Ya participaste</span>':''}${q.cierra_at?`<span class="chip"><i class="fa-regular fa-calendar"></i>Hasta ${esc(fmtDate(q.cierra_at))}</span>`:''}</div><div class="card-actions">${action}</div></div></article>`;
   }
   function renderConsultas(){
     const list=(state.data.consultas||[]).filter(q=>q.estado!=='draft'&&q.estado!=='archived'); $('consultasGrid').innerHTML=list.length?list.map(card).join(''):`<div class="empty" style="grid-column:1/-1"><i class="fa-regular fa-comments"></i><div><strong>No hay consultas disponibles.</strong><br>Vuelve pronto.</div></div>`;
-  }
-  function renderResultadosIndex(){
-    const list=(state.data.consultas||[]).filter(q=>q.estado!=='draft'&&q.estado!=='archived'); $('resultadosGrid').innerHTML=list.length?list.map(q=>`<article class="card"><div class="card-body"><div class="card-top"><div><span class="chip">${esc(q.tipo)}</span><h3>${esc(q.titulo)}</h3></div>${statusBadge(q.estado)}</div><p>${q.respondida?'Puedes consultar los resultados disponibles.':'Algunas consultas muestran resultados después de votar o al cerrar.'}</p><div class="card-actions"><button class="btn soft" data-result="${q.id}"><i class="fa-solid fa-chart-column"></i>Abrir resultados</button></div></div></article>`).join(''):'<div class="empty">Sin resultados todavía.</div>';
   }
   function renderMiPerfil(){
     const p=state.data.perfil||{}; const qs=state.data.consultas||[]; const done=qs.filter(q=>q.respondida); const xp=done.reduce((a,q)=>a+(q.puntos_habilitados?Number(q.puntos_valor||0):0),0);
@@ -75,7 +72,7 @@
   }
 
   function setView(view){
-    ['consultas','resultados','miperfil'].forEach(v=>$(`view-${v}`).classList.toggle('active',v===view)); document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===view)); window.scrollTo({top:0,behavior:'smooth'});
+    ['consultas','miperfil'].forEach(v=>$(`view-${v}`).classList.toggle('active',v===view)); document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===view)); window.scrollTo({top:0,behavior:'smooth'});
   }
 
   async function openConsulta(id){
@@ -86,7 +83,7 @@
       const responseNote=data.respondida?(editable?'Ya participaste. Puedes corregir tu respuesta: la nueva versión reemplaza la anterior y no genera votos ni XP adicionales.':'Tu respuesta está registrada y cuenta una sola vez.'):'Una respuesta por integrante. Puedes corregirla mientras la encuesta esté abierta.';
       $('modalBody').innerHTML=`<div class="panel" style="box-shadow:none;margin-bottom:16px;background:#eff8f9;font-size:.9375rem;line-height:1.5">${esc(responseNote)}</div>${data.consulta.descripcion?`<p style="color:var(--muted);line-height:1.55;margin-top:0">${esc(data.consulta.descripcion)}</p>`:''}<form id="voteForm">${data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640' && editable ? renderWizard(data.preguntas) : data.preguntas.map(renderQuestion).join('')}${editable?`<button class="btn primary" type="submit" style="width:100%"><i class="fa-solid fa-paper-plane"></i>${data.respondida?'Actualizar mi respuesta':'Enviar mi participación'}</button>`:`<div class="panel"><strong>Tu respuesta ya fue registrada.</strong></div>`}</form><div id="inlineResults" style="margin-top:18px"></div>`;
       $('consultaModal').classList.remove('hidden'); $('consultaModal').setAttribute('aria-hidden','false');
-      if(editable){ $('voteForm').addEventListener('submit',submitVote);if(data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640')showWizardStep(0); } if(data.respondida){ await loadResults(id,'inlineResults',false); subscribeResults(id); }
+      if(editable){ $('voteForm').addEventListener('submit',submitVote);if(data.consulta.id==='c89f12cd-b0f3-4f89-a51b-f6368383d640')showWizardStep(0); }
     }catch(err){ console.error(err); toast(err.message||'No fue posible abrir la consulta.'); }
   }
 
@@ -141,30 +138,11 @@
       toast(res.puntos_otorgados>0?`Participación guardada · +${res.puntos_otorgados} XP`:'Participación actualizada'); await bootstrap();
       if(state.channel){client.removeChannel(state.channel);state.channel=null;}
       $('modalTitle').textContent='¡Gracias por participar!';$('modalSubtitle').textContent='Tu voz ayuda a construir el Octubre Fest.';
-      $('modalBody').innerHTML=`<div class="participation-done"><i class="fa-solid fa-circle-check"></i><h3>Tu participación quedó registrada</h3><p>Ya puedes conocer las preferencias de la comunidad. Puedes volver y editar tu respuesta mientras la consulta esté abierta.</p>${res.puntos_otorgados>0?`<span class="chip">+${res.puntos_otorgados} XP</span>`:''}<div class="festival-actions"><button class="btn teal" data-result="${data.consulta.id}">Ver resultados</button><button class="btn ghost" type="button" data-close-modal>Listo</button></div></div>`;
+      $('modalBody').innerHTML=`<div class="participation-done"><i class="fa-solid fa-circle-check"></i><h3>Tu participación quedó registrada</h3><p>La administración comunicará los resultados al finalizar. Puedes volver y editar tu respuesta mientras la consulta esté abierta.</p>${res.puntos_otorgados>0?`<span class="chip">+${res.puntos_otorgados} XP</span>`:''}<div class="festival-actions"><button class="btn ghost" type="button" data-close-modal>Listo</button></div></div>`;
     }catch(err){ console.error(err); toast(err.message||'No se pudo guardar la respuesta.'); }
     finally{ if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Enviar mi participación';} }
   }
 
-  async function loadResults(id,target='modalBody',wrap=true){
-    try{
-      const data=await rpc('participa_resultados',{p_token:state.token,p_consulta:id});
-      if(!data?.ok){ const html=`<div class="panel"><strong><i class="fa-solid fa-lock"></i> ${esc(data?.message||'Resultados no disponibles todavía.')}</strong></div>`; if(wrap){ $('modalTitle').textContent='Resultados'; $('modalSubtitle').textContent=''; $(target).innerHTML=html; $('consultaModal').classList.remove('hidden'); } else $(target).innerHTML=html; return; }
-      const html=`<div class="panel" style="margin-bottom:14px"><span class="live-dot">En vivo</span><h3 style="margin:8px 0 0;color:var(--navy)">${data.participantes} participantes</h3></div>${data.preguntas.map(resultQuestion).join('')}`;
-      if(wrap){ $('modalTitle').textContent='Resultados de la comunidad'; $('modalSubtitle').textContent='Se actualizan cuando se registra una nueva participación.'; $(target).innerHTML=`<div class="results">${html}</div>`; $('consultaModal').classList.remove('hidden'); subscribeResults(id,()=>loadResults(id,target,wrap)); }
-      else $(target).innerHTML=`<div class="results"><h3 style="color:var(--navy)">Resultados</h3>${html}</div>`;
-    }catch(err){ console.error(err); toast('No fue posible cargar los resultados.'); }
-  }
-  function resultQuestion(q){
-    if(['single','multiple','yes_no'].includes(q.tipo)) return `<div class="question"><h4>${esc(q.pregunta)}</h4>${q.opciones.map(o=>`<div class="result-row"><div class="result-head"><span>${esc(o.etiqueta)}</span><span>${o.porcentaje}% · ${o.votos}</span></div><div class="bar"><span style="width:${Math.max(0,Math.min(100,Number(o.porcentaje||0)))}%"></span></div></div>`).join('')}</div>`;
-    if(q.tipo==='scale') return `<div class="question"><h4>${esc(q.pregunta)}</h4><div class="panel" style="box-shadow:none"><strong style="font-size:1.5rem;color:var(--teal)">${q.promedio??'—'}</strong> / ${q.max}</div></div>`;
-    return `<div class="question"><h4>${esc(q.pregunta)}</h4><p class="form-note">${q.respuestas} respuestas abiertas. Se reservan para análisis y moderación.</p></div>`;
-  }
-
-  function subscribeResults(id,callback){
-    if(state.channel){ client.removeChannel(state.channel); state.channel=null; }
-    state.channel=client.channel(`participa-${id}-${Date.now()}`).on('postgres_changes',{event:'INSERT',schema:'public',table:'participa_resultado_eventos',filter:`consulta_id=eq.${id}`},()=>{ callback?callback():loadResults(id,'inlineResults',false); bootstrap(); }).subscribe();
-  }
   function closeModal(){ $('consultaModal').classList.add('hidden'); $('consultaModal').setAttribute('aria-hidden','true'); if(state.channel){client.removeChannel(state.channel);state.channel=null;} state.current=null; }
   async function logout(){ try{ if(state.token) await rpc('participa_logout',{p_token:state.token}); }catch(_){} clearToken(); closeModal(); showLogin(); }
 
@@ -174,7 +152,6 @@
     if(e.target.closest('[data-close-modal]'))closeModal();
     const nav=e.target.closest('[data-nav]'); if(nav){ e.preventDefault(); setView(nav.dataset.nav); }
     const open=e.target.closest('[data-open]'); if(open) openConsulta(open.dataset.open);
-    const result=e.target.closest('[data-result]'); if(result) loadResults(result.dataset.result);
   });
   $('loginForm').addEventListener('submit',login); $('logoutBtn').addEventListener('click',logout); $('modalClose').addEventListener('click',closeModal); $('consultaModal').addEventListener('click',e=>{if(e.target===$('consultaModal'))closeModal();});
   window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
