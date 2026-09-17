@@ -78,6 +78,16 @@
     if(q.tipo==='scale')return `<section class="question"><h4>${esc(q.pregunta)}</h4><p style="font-size:1.5rem;color:var(--teal);font-weight:800">Promedio: ${q.promedio==null?'Sin respuestas':esc(q.promedio)}</p><p class="form-note">Escala de ${esc(q.min)} a ${esc(q.max)} · ${number(q.respuestas)} respuestas.</p></section>`;
     return `<section class="question"><h4>${esc(q.pregunta)}</h4><p>${number(q.respuestas)} respuesta(s) abierta(s).</p><p class="form-note">Usa «Leer respuestas abiertas» para revisar su contenido.</p></section>`;
   }
+  function adminParticipantList(data){
+    const rows=data.participantes_detalle||[];
+    if(!rows.length)return '<section class="question"><h4>Quiénes participaron</h4><div class="empty" style="margin-top:10px">Todavía no hay participantes.</div></section>';
+    return `<section class="question"><h4>Quiénes participaron y XP otorgados</h4><p class="form-note">Esta lista es visible solo en administración y usa el evento real de puntos registrado para cada respuesta.</p>${rows.map(p=>{
+      const d=new Date(p.fecha);
+      const fecha=Number.isNaN(d.getTime())?'':new Intl.DateTimeFormat('es-CL',{dateStyle:'medium',timeStyle:'short'}).format(d);
+      const xp=Number(p.xp)||0;
+      return `<div class="result-row"><div class="result-head" style="gap:12px;align-items:center;flex-wrap:wrap"><span style="overflow-wrap:anywhere"><i class="fa-solid fa-user" style="margin-right:7px;color:var(--teal)"></i><strong>${esc(p.nombre||'Integrante')}</strong>${fecha?`<small class="form-note" style="display:block;margin-top:3px">${esc(fecha)}</small>`:''}</span>${p.xp_otorgados?`<span class="chip"><i class="fa-solid fa-star"></i> +${xp} XP</span>`:'<span class="chip">Sin XP</span>'}</div></div>`;
+    }).join('')}</section>`;
+  }
   async function openAdminResults(id,trigger=null){
     state.resultsId=id;if(trigger)state.resultsTrigger=trigger;
     const base=state.panel?.consultas?.find(q=>q.id===id);
@@ -90,7 +100,7 @@
       if(state.resultsId!==id)return;
       if(!data?.ok)throw new Error(data?.message||'No se pudieron cargar los resultados.');
       $('adminResultsSubtitle').textContent='Actualizado: '+new Intl.DateTimeFormat('es-CL',{dateStyle:'short',timeStyle:'medium'}).format(new Date());
-      $('adminResultsBody').innerHTML=`<div class="panel" style="box-shadow:none;background:#eff8f9"><strong style="font-size:1.5rem;color:var(--navy)">${Number(data.participantes)||0} participante(s)</strong><p class="form-note">Una respuesta por integrante. Las ediciones reemplazan los votos anteriores.</p></div>${(data.preguntas||[]).map(adminResultQuestion).join('')}`;
+      $('adminResultsBody').innerHTML=`<div class="panel" style="box-shadow:none;background:#eff8f9"><strong style="font-size:1.5rem;color:var(--navy)">${Number(data.participantes)||0} participante(s)</strong><p class="form-note">Una respuesta por integrante. Las ediciones reemplazan los votos anteriores.</p></div>${adminParticipantList(data)}${(data.preguntas||[]).map(adminResultQuestion).join('')}`;
     }catch(err){console.error(err);if(state.resultsId===id)$('adminResultsBody').innerHTML=`<div class="error">${esc(err.message||'No se pudieron cargar los resultados.')} Puedes reintentar con «Actualizar resultados».</div>`;}
     finally{if(state.resultsId===id)$('adminResultsRefresh').disabled=false;}
   }
