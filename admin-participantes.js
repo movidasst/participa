@@ -85,7 +85,12 @@
   }
 
   function relabelButtons(){
-    document.querySelectorAll('[data-admin-results]').forEach(btn=>{btn.innerHTML='<i class="fa-solid fa-chart-column"></i> Resultados y participantes';btn.title='Ver resultados, quién participó y quién votó por cada opción';});
+    document.querySelectorAll('[data-admin-results]').forEach(btn=>{
+      if(btn.dataset.participantsLabel==='1')return;
+      btn.dataset.participantsLabel='1';
+      btn.innerHTML='<i class="fa-solid fa-chart-column"></i> Resultados y participantes';
+      btn.title='Ver resultados, quién participó y quién votó por cada opción';
+    });
   }
 
   document.addEventListener('click',e=>{
