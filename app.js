@@ -138,7 +138,7 @@
       toast(res.puntos_otorgados>0?`Participación guardada · +${res.puntos_otorgados} XP`:'Participación actualizada'); await bootstrap();
       if(state.channel){client.removeChannel(state.channel);state.channel=null;}
       $('modalTitle').textContent='¡Gracias por participar!';$('modalSubtitle').textContent='Tu voz ayuda a construir el Octubre Fest.';
-      $('modalBody').innerHTML=`<div class="participation-done"><i class="fa-solid fa-circle-check"></i><h3>Tu participación quedó registrada</h3><p>La administración comunicará los resultados al finalizar. Puedes volver y editar tu respuesta mientras la consulta esté abierta.</p>${res.puntos_otorgados>0?`<span class="chip">+${res.puntos_otorgados} XP</span>`:''}<div class="festival-actions"><button class="btn ghost" type="button" data-close-modal>Listo</button></div></div>`;
+      $('modalBody').innerHTML=`<div class="participation-done"><i class="fa-solid fa-circle-check"></i><h3>Tu participación quedó registrada</h3><p>Los resultados serán compartidos por los grupos de La Movida de SST+ al finalizar la consulta. Puedes volver y editar tu respuesta mientras la consulta esté abierta.</p>${res.puntos_otorgados>0?`<span class="chip">+${res.puntos_otorgados} XP</span>`:''}<div class="festival-actions"><button class="btn ghost" type="button" data-close-modal>Listo</button></div></div>`;
     }catch(err){ console.error(err); toast(err.message||'No se pudo guardar la respuesta.'); }
     finally{ if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Enviar mi participación';} }
   }
