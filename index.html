@@ -63,7 +63,7 @@
                 <p id="heroDescription">Consulta, vota y ayuda a construir las actividades de nuestra comunidad.</p>
                 <div class="hero-actions">
                   <button class="btn yellow" data-nav="consultas"><i class="fa-solid fa-check-to-slot"></i> Participar ahora</button>
-                  <button class="btn ghost" data-nav="resultados"><i class="fa-solid fa-chart-column"></i> Ver resultados</button>
+
                 </div>
               </div>
               <div class="hero-kpis">
@@ -83,10 +83,6 @@
             <div id="consultasGrid" class="cards"></div>
             <div class="panel" style="margin-top:18px;text-align:center;background:#eff8f9;border-color:#d2e8eb"><p style="margin:0 0 12px;color:var(--navy);font-size:1rem;font-weight:700">¿No estás registrado?</p><a class="btn teal" href="https://registro.movidasst.com/">Regístrate aquí</a></div>
           </div>
-          <div id="view-resultados" class="view">
-            <div class="section-head"><div><h2 class="section-title">Resultados</h2><p class="section-desc">Resultados disponibles según la configuración de cada consulta.</p></div><span class="live-dot">Actualización automática</span></div>
-            <div id="resultadosGrid" class="cards"></div>
-          </div>
           <div id="view-miperfil" class="view">
             <div class="section-head"><div><h2 class="section-title">Mi participación</h2><p class="section-desc">Resumen de tu actividad dentro de PARTICIPA.</p></div></div>
             <div id="miPanel" class="panel"></div>
@@ -97,9 +93,9 @@
 
     <footer class="footer"><div class="container"><strong>La Movida de SST Plus</strong> · De la Reacción a la Prevención<br>www.movidasst.com</div></footer>
 
-    <nav class="mobile-nav">
+    <nav class="mobile-nav" style="grid-template-columns:repeat(2,1fr)">
       <button class="active" data-nav="consultas"><i class="fa-solid fa-check-to-slot"></i><span>Participar</span></button>
-      <button data-nav="resultados"><i class="fa-solid fa-chart-column"></i><span>Resultados</span></button>
+
       <button data-nav="miperfil"><i class="fa-regular fa-user"></i><span>Mi actividad</span></button>
     </nav>
   </div>
@@ -113,6 +109,6 @@
   <div id="toast" class="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20260916-respuesta-unica"></script>
+  <script src="app.js?v=20260917-resultados-privados"></script>
 </body>
 </html>
