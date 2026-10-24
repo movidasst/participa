@@ -12,8 +12,8 @@
   function fmtDate(v){ if(!v) return 'Sin fecha'; const d=new Date(v); if(Number.isNaN(d.getTime())) return ''; return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric'}).format(d); }
   function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),2800); }
   async function rpc(name,args={}){ const {data,error}=await client.rpc(name,args); if(error) throw error; return data; }
-  function saveToken(token){ state.token=token; localStorage.setItem(STORAGE_KEY,token); }
-  function clearToken(){ state.token=null; state.data=null; localStorage.removeItem(STORAGE_KEY); }
+  function saveToken(token){ state.token=token; sessionStorage.setItem(STORAGE_KEY,token); localStorage.removeItem(STORAGE_KEY); }
+  function clearToken(){ state.token=null; state.data=null; sessionStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY); }
   function statusBadge(status){ const cls=status==='active'?'active':status==='closed'?'closed':'scheduled'; const label=status==='active'?'Activa':status==='closed'?'Cerrada':'Programada'; return `<span class="badge ${cls}">${label}</span>`; }
 
   function showLogin(message=''){
@@ -150,5 +150,5 @@
   });
   $('loginForm').addEventListener('submit',login); $('logoutBtn').addEventListener('click',logout); $('modalClose').addEventListener('click',closeModal); $('consultaModal').addEventListener('click',e=>{if(e.target===$('consultaModal'))closeModal();});
   window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-  state.token=localStorage.getItem(STORAGE_KEY); bootstrap();
+  state.token=sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY); if(state.token)sessionStorage.setItem(STORAGE_KEY,state.token); localStorage.removeItem(STORAGE_KEY); bootstrap();
 })();
