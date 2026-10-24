@@ -1,0 +1,114 @@
+/* PARTICIPA · experiencia permanente · visual 2026 */
+html,body{max-width:100%;overflow-x:clip}
+body{background:radial-gradient(circle at 0% -8%,rgba(0,123,133,.13),transparent 28%),radial-gradient(circle at 100% 8%,rgba(255,182,0,.07),transparent 20%),#f8fafc}
+.login-wrap{padding:14px 12px;min-height:100dvh}
+.login-card{border-color:#d4e8e9;box-shadow:0 24px 65px rgba(0,32,91,.085)}
+.login-brand h1{font-size:clamp(1.9rem,5vw,2.4rem);letter-spacing:-.03em}
+.login-brand p{font-size:.94rem;line-height:1.6}
+.participa-login-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:17px 0 0}
+.participa-login-steps span{background:#e9f6f5;padding:11px 6px;border-radius:13px;color:#006d78;text-align:center;font-weight:800;font-size:.83rem}
+.field input,.field textarea,.field select{min-height:45px;font-size:16px}
+#appView .hero{padding:22px 0 10px}
+#appView .hero-shell{padding:clamp(24px,3vw,44px);background:linear-gradient(110deg,#00205b,#003b69 56%,#007b85);color:#fff;border:0;box-shadow:0 16px 43px rgba(0,32,91,.14);border-radius:25px}
+#appView .hero-shell:before,#appView .hero-shell:after{display:block}
+#appView .hero-grid{grid-template-columns:minmax(0,1.6fr) minmax(210px,.8fr)!important;align-items:center;gap:18px}
+#appView .hero .eyebrow{color:#c9fcf7;background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.2)}
+#appView .hero h1{font-size:clamp(2.2rem,5vw,3.8rem);color:white;line-height:1.05;margin:18px 0 13px}
+#appView .hero h1 span{color:white}
+#appView .hero h1 small{display:block;color:#a2f0e7!important;font-size:clamp(1.04rem,2vw,1.4rem)!important;margin-top:11px;font-weight:650}
+#appView .hero p{color:#e1f2f4;line-height:1.65;font-size:1rem;max-width:680px}
+#appView .hero .hero-actions{display:flex;margin-top:22px}
+#appView .hero .hero-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#appView .hero-kpi{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.18);padding:15px 9px}
+#appView .hero-kpi:nth-child(3){grid-column:1/-1}
+#appView .hero-kpi strong{color:#fff;font-size:1.65rem}
+#appView .hero-kpi span{color:#d9f3f7}
+.participa-desktop-nav{display:flex;gap:6px;align-items:center}
+.participa-desktop-nav button{border:0;border-radius:11px;background:transparent;color:#41586f;display:flex;align-items:center;gap:7px;min-height:40px;padding:8px 13px;font-weight:800;font-size:.83rem;cursor:pointer}
+.participa-desktop-nav button.active{color:#00727b;background:#e7f6f4}
+.section{padding:17px 0 28px}
+.section-head{margin-bottom:17px}
+.section-title{font-size:clamp(1.45rem,3vw,1.9rem);line-height:1.15}
+.section-desc{font-size:.94rem;line-height:1.58;max-width:810px}
+.participa-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 21px}
+.participa-guide>div{background:#fff;border:1px solid #d6e8ec;border-radius:16px;display:grid;grid-template-columns:39px 1fr;column-gap:11px;row-gap:2px;align-items:center;padding:15px;min-width:0}
+.participa-guide i{grid-row:span 2;display:grid;place-items:center;width:39px;height:39px;border-radius:12px;background:#e7f5f4;color:#007b85}
+.participa-guide strong{font-size:.88rem;color:#00205b}
+.participa-guide span{font-size:.81rem;line-height:1.48;color:#607486}
+#consultasGrid.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+#consultasGrid .card{min-width:0;border:1px solid #d9e7eb;border-radius:22px;box-shadow:0 8px 29px rgba(0,32,91,.06)}
+#consultasGrid .card-body{padding:22px;display:flex;flex-direction:column;min-height:259px}
+#consultasGrid .card-top{gap:9px;align-items:center}
+#consultasGrid .card h3{font-size:clamp(1.2rem,2vw,1.52rem);line-height:1.24;margin:17px 0 10px;letter-spacing:-.02em}
+#consultasGrid .card p{font-size:.92rem;line-height:1.6}
+#consultasGrid .card .chips{margin-top:auto;padding-top:17px}
+#consultasGrid .card-actions{margin-top:16px}
+#consultasGrid .card-actions .btn{min-height:45px;padding:8px 12px}
+#consultasGrid .chip{font-size:.73rem}
+#consultasGrid .chip:has(.fa-star){background:#fff5db;border-color:#f5e4af;color:#805900}
+#consultasGrid .card:has(.fa-circle-check) .card-accent{background:linear-gradient(90deg,#70ad47,#007b85)}
+.participa-topic{font-size:.72rem;color:#007b85;font-weight:900;letter-spacing:.02em}
+.participa-help{font-size:.75rem!important;color:#687e91!important;margin-top:10px!important}
+.results-toolbar{display:flex;align-items:end;flex-wrap:wrap;gap:11px;margin-bottom:12px}
+.results-toolbar .field{margin:0;flex:1 1 270px}
+.results-live-note{font-size:.83rem;line-height:1.5;color:#587185;margin:12px 0 18px}
+.results-live-note i{color:#007b85}
+.results-summary{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}
+.participa-stat-pill{display:flex;align-items:center;gap:7px;background:#e9f6f5;color:#075e67;border:1px solid #c9e6e4;border-radius:12px;padding:10px 13px;font-size:.83rem;font-weight:800}
+.participa-stat-pill strong{font-size:1.22rem}
+.results-dashboard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.participa-result-panel{background:#fff;border:1px solid #d7e6ec;border-radius:20px;padding:20px;min-width:0;box-shadow:0 8px 27px rgba(0,32,91,.05)}
+.participa-result-panel h3{color:#00205b;font-size:1.14rem;line-height:1.35;margin:0 0 10px}
+.participa-results-note{color:#64748b;font-size:.83rem;line-height:1.5;margin:0 0 17px}
+.participa-result-bars{display:grid;gap:14px}
+.participa-result-label{display:flex;justify-content:space-between;gap:10px;margin-bottom:7px;align-items:start}
+.participa-result-label strong{color:#2c4a59;font-size:.82rem;overflow-wrap:anywhere}
+.participa-result-label span{color:#007b85;font-size:.74rem;font-weight:850;flex:none;text-align:right}
+.participa-result-track{width:100%;height:10px;border-radius:99px;background:#e7eef2;overflow:hidden}
+.participa-result-track>span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#007b85,#70ad47)}
+.participa-result-score{font-size:1.7rem;color:#007b85;font-weight:900}
+.results-dashboard .empty{grid-column:1/-1}
+.modal-card{overscroll-behavior:contain}
+.wizard-progress{grid-template-columns:repeat(auto-fit,minmax(50px,1fr))}
+.mobile-nav{gap:4px;grid-template-columns:repeat(3,minmax(0,1fr));box-shadow:0 -7px 24px rgba(0,32,91,.09)}
+.mobile-nav button{border-radius:12px;min-height:57px}
+.mobile-nav button.active{background:#e6f5f4;color:#006b73}
+.btn:focus-visible,.icon-btn:focus-visible,.mobile-nav button:focus-visible,.participa-desktop-nav button:focus-visible{outline:3px solid #ffb600;outline-offset:2px}
+@media(max-width:759px){
+  .participa-desktop-nav{display:none}
+  body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  .container{width:calc(100% - 22px)}
+  .login-wrap{padding:9px 10px 22px;align-items:start}
+  .login-card{padding:18px 15px;border-radius:21px;margin:auto}
+  .login-brand img{width:91px;height:91px}
+  .topbar-inner{min-height:62px}
+  .brand img{width:43px;height:43px}
+  .brand strong{font-size:.95rem}
+  .brand span{font-size:.66rem}
+  .header-actions{gap:5px}
+  .avatar{width:36px;height:36px}
+  #appView .hero{padding-top:12px}
+  #appView .hero-shell{padding:23px 17px}
+  #appView .hero-grid{grid-template-columns:minmax(0,1fr)!important;gap:15px}
+  #appView .hero h1{font-size:clamp(1.8rem,7.2vw,2.7rem)}
+  #appView .hero .hero-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #appView .hero-kpi:nth-child(3){grid-column:auto}
+  #appView .hero-kpi{padding:12px 5px}
+  #appView .hero-kpi strong{font-size:1.26rem}
+  #appView .hero-kpi span{font-size:.65rem}
+  #appView .hero-actions .btn{width:100%}
+  .participa-guide{grid-template-columns:1fr;gap:9px}
+  #consultasGrid.cards{grid-template-columns:minmax(0,1fr)}
+  #consultasGrid .card-body{padding:19px;min-height:auto}
+  #consultasGrid .card-actions{display:grid;grid-template-columns:1fr}
+  .results-dashboard{grid-template-columns:minmax(0,1fr)}
+  .results-toolbar{padding:14px}
+  .results-toolbar .btn{width:100%}
+  .modal{padding:7px}
+  .modal-card{max-height:96dvh;border-radius:18px}
+  .modal-body{padding:16px}
+  .footer{padding-bottom:109px}
+}
+@media(min-width:760px){body{padding-bottom:0}.mobile-nav{display:none}}
+@media(max-width:360px){.login-card{padding:15px 12px}.participa-login-steps span{font-size:.72rem;padding:8px 2px}.avatar{width:32px;height:32px}.mobile-nav button{font-size:.63rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

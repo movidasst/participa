@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#00205b">
 <title>Administración | PARTICIPA</title><link rel="icon" type="image/png" href="https://www.movidasst.com/logo-oficial-movida-sst-plus.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="styles.css?v=20260916-unified">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="styles.css?v=20260916-unified"><link rel="stylesheet" href="participa-permanente.css?v=20261024-v1">
 </head>
 <body>
 <header class="topbar"><div class="container topbar-inner"><a class="brand" href="index.html"><img src="https://www.movidasst.com/logo-oficial-movida-sst-plus.png" alt=""><div><strong>PARTICIPA · ADMIN</strong><span id="adminName">La Movida de SST Plus</span></div></a><div class="header-actions"><button id="adminLogout" class="btn ghost hidden" type="button">Cerrar sesión</button><a class="btn ghost" href="index.html"><i class="fa-solid fa-arrow-left"></i> Volver</a></div></div></header>
@@ -21,12 +21,12 @@
 <div class="panel"><div class="section-head"><div><h2 id="formTitle" class="section-title">Nueva consulta</h2><p class="section-desc">Configura lo que verá y responderá la comunidad.</p></div></div>
 <form id="consultaForm"><input type="hidden" id="consultaId">
 <div class="field"><label>Campaña</label><select id="campanaId" required></select></div>
-<div class="field"><label>Título</label><input id="consultaTitulo" required placeholder="Ej. ¿Qué actividad quieres para Octubre Fest?"></div>
-<div class="field"><label>Identificador URL</label><input id="consultaSlug" required placeholder="actividad-octubre-fest"></div>
+<div class="field"><label>Título</label><input id="consultaTitulo" required placeholder="Ej. ¿Qué temas de SST te interesan?"></div>
+<div class="field"><label>Identificador URL</label><input id="consultaSlug" required placeholder="temas-para-la-comunidad"></div>
 <div class="field"><label>Resumen corto</label><input id="consultaResumen" placeholder="Una frase para la tarjeta"></div>
 <div class="field"><label>Descripción</label><textarea id="consultaDescripcion" placeholder="Explica para qué sirve esta consulta"></textarea></div>
 <div class="field-row"><div class="field"><label>Formato</label><select id="consultaTipo"><option value="poll">Votación</option><option value="survey">Encuesta</option><option value="professional">Consulta profesional</option><option value="proposal">Propuestas</option><option value="decision">Decidamos</option></select></div><div class="field"><label>Estado</label><select id="consultaEstado"><option value="draft">Borrador</option><option value="scheduled">Programada</option><option value="active">Activa</option><option value="closed">Cerrada</option><option value="archived">Archivada</option></select></div></div>
-<div class="field-row"><div class="field"><label>Mostrar resultados</label><select id="resultVisibility"><option value="admin_only">Solo administración</option></select></div><div class="field"><label>XP por participar</label><input id="pointsValue" type="number" min="0" max="1000" value="3"></div></div>
+<div class="field-row"><div class="field"><label>Mostrar resultados</label><select id="resultVisibility"><option value="always">Estadísticas públicas en vivo</option><option value="after_vote">Después de participar</option><option value="after_close">Al cerrar</option><option value="admin_only">Solo administración</option></select></div><div class="field"><label>XP por participar</label><input id="pointsValue" type="number" min="0" max="1000" value="100"></div></div>
 <div class="field-row"><label class="option"><input id="pointsEnabled" type="checkbox" checked><span><strong>Genera XP</strong><span>Se integra al ranking actual.</span></span></label><label class="option"><input id="allowEdit" type="checkbox" checked><span><strong>Permitir editar</strong><span>Puede cambiar su respuesta mientras esté abierta.</span></span></label></div>
 <div class="field-row"><div class="field"><label>Inicio</label><input id="startAt" type="datetime-local"></div><div class="field"><label>Cierre</label><input id="endAt" type="datetime-local"></div></div>
 <div class="section-head" style="margin-top:22px"><div><h3 style="margin:0;color:var(--navy)">Preguntas</h3><p class="section-desc">Puedes combinar opciones, Sí/No, escalas y respuestas abiertas.</p></div><button id="addQuestion" type="button" class="btn soft"><i class="fa-solid fa-plus"></i> Añadir pregunta</button></div>
@@ -35,7 +35,7 @@
 </form></div>
 </div>
 <div>
-<div class="panel"><div class="section-head"><div><h2 class="section-title">Campañas</h2><p class="section-desc">Octubre Fest hoy; futuras campañas mañana.</p></div></div><div id="campaignList" class="admin-list"></div></div>
+<div class="panel"><div class="section-head"><div><h2 class="section-title">Campañas</h2><p class="section-desc">Consultas generales y temáticas abiertas durante todo el año.</p></div></div><div id="campaignList" class="admin-list"></div></div>
 <div class="panel" style="margin-top:16px"><div class="section-head"><div><h2 class="section-title">Consultas</h2><p class="section-desc">Edita, activa, cierra o archiva.</p></div></div><div id="consultaList" class="admin-list"></div></div>
 </div>
 </div></section>
