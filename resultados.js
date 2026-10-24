@@ -49,12 +49,12 @@
       await loadResults();
     }catch(err){message('No fue posible cargar las consultas. Intenta nuevamente.');}
   }
-  function bar(name,ratio,votes){
+  function bar(name,ratio){
     const p=Math.max(0,Math.min(100,Number(ratio)||0));
     const row=element('div','participa-result-option');
     const top=element('div','participa-result-label');
     top.append(element('strong','',name),
-      element('span','',p.toLocaleString('es-CL',{maximumFractionDigits:1})+' % · '+Number(votes||0)+' votos'));
+      element('span','',p.toLocaleString('es-CL',{maximumFractionDigits:1})+' %'));
     const track=element('div','participa-result-track');
     track.setAttribute('role','img');
     track.setAttribute('aria-label',name+': '+p+' por ciento');
@@ -66,28 +66,22 @@
   function chart(question){
     const art=element('article','participa-result-panel');
     art.appendChild(element('h3','',question.pregunta||'Resultados'));
-    const n=Number(question.respuestas||0);
-    if(question.tipo==='protected'){
-      art.appendChild(element('p','participa-results-note',
-        'Tendencias disponibles cuando al menos 3 personas respondan esta pregunta. Respuestas actuales: '+n+'.'));
-      return art;
-    }
-    if(question.tipo==='text'){
-      art.appendChild(element('p','participa-results-note',
-        n+' aporte(s) escritos recibidos. El contenido se revisa solo en administración.'));
-      return art;
-    }
+    // Sin cifras de participantes o votos, ni detalles de respuestas individuales.
+    if(question.tipo==='protected'||question.tipo==='text')return null;
     if(question.tipo==='scale'){
+      if(question.promedio==null)return null;
       art.appendChild(element('div','participa-result-score',
-        (question.promedio==null?'—':Number(question.promedio).toLocaleString('es-CL'))+' promedio'));
-      art.appendChild(element('p','participa-results-note',n+' respuesta(s)'));
+        Number(question.promedio).toLocaleString('es-CL')+' de '+Number(question.max||5)));
+      art.appendChild(element('p','participa-results-note','Promedio de las preferencias en esta escala.'));
       return art;
     }
-    art.appendChild(element('p','participa-results-note',
-      n+' respuesta(s).'+(question.tipo==='multiple'?' Cada participante podía marcar varias opciones.':'')));
+    if(!['single','multiple','yes_no'].includes(question.tipo))return null;
+    if(question.tipo==='multiple'){
+      art.appendChild(element('p','participa-results-note','Se podían elegir varias opciones; los porcentajes pueden sumar más del 100 %.'));
+    }
     const bars=element('div','participa-result-bars');
-    const opts=[...(question.opciones||[])].sort((a,b)=>Number(b.votos||0)-Number(a.votos||0));
-    for(const o of opts)bars.appendChild(bar(o.etiqueta||'Opción',o.porcentaje,o.votos));
+    const opts=[...(question.opciones||[])].sort((a,b)=>Number(b.porcentaje||0)-Number(a.porcentaje||0));
+    for(const o of opts)bars.appendChild(bar(o.etiqueta||'Opción',o.porcentaje));
     art.appendChild(bars);
     return art;
   }
@@ -100,17 +94,21 @@
       const data=await rpc('participa_resultados_publicos',{p_token:token,p_consulta:id});
       if(!active||select.value!==id||myRequest!==sequence)return;
       if(!data?.ok){summary.replaceChildren();message(data?.message||'Los resultados todavía no están disponibles.');return;}
-      const n=Number(data.participantes||0);
-      const participants=element('div','participa-stat-pill');
-      participants.append(element('i','fa-solid fa-users'),element('strong','',n),document.createTextNode(' participantes'));
-      const updated=element('div','participa-stat-pill');
-      updated.append(element('i','fa-regular fa-clock'),document.createTextNode(' Actualizado '+new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date())));
-      summary.replaceChildren(participants,updated);
-      if(n<Number(data.minimo_para_detalle||3)){
-        message('Se han registrado '+n+' participación(es). Las tendencias se muestran a partir de 3 participantes para proteger la privacidad.');
+      const available=Number(data.participantes||0)>=Number(data.minimo_para_detalle||3);
+      if(!available){
+        summary.replaceChildren();
+        message('Las tendencias aparecerán aquí cuando tengamos información suficiente. Mientras tanto, puedes participar en las consultas abiertas.');
       }else{
-        const nodes=(data.preguntas||[]).map(chart);
-        grid.replaceChildren(...nodes);
+        const nodes=(data.preguntas||[]).map(chart).filter(Boolean);
+        if(!nodes.length){
+          summary.replaceChildren();
+          message('Estamos recopilando las preferencias de la comunidad. Pronto encontrarás las tendencias aquí.');
+        }else{
+          const updated=element('div','participa-stat-pill');
+          updated.append(element('i','fa-regular fa-clock'),document.createTextNode(' Tendencias actualizadas '+new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit'}).format(new Date())));
+          summary.replaceChildren(updated);
+          grid.replaceChildren(...nodes);
+        }
       }
     }catch(err){
       if(active&&select.value===id)message('No se pudieron actualizar las estadísticas. Pulsa «Actualizar» para reintentar.');

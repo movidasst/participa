@@ -68,10 +68,10 @@
 
                 </div>
               </div>
-              <div class="hero-kpis">
-                <div class="hero-kpi"><strong id="kpiActive">0</strong><span>consultas</span></div>
-                <div class="hero-kpi"><strong id="kpiAnswered">0</strong><span>respondidas</span></div>
-                <div class="hero-kpi"><strong id="kpiPeople">0</strong><span>participaciones</span></div>
+              <div class="hero-kpis" aria-label="Qué puedes hacer en PARTICIPA">
+                <div class="hero-kpi"><strong><i class="fa-solid fa-check-to-slot" aria-hidden="true"></i></strong><span>Comparte tus preferencias</span></div>
+                <div class="hero-kpi"><strong><i class="fa-solid fa-chart-simple" aria-hidden="true"></i></strong><span>Descubre las tendencias</span></div>
+                <div class="hero-kpi"><strong><i class="fa-solid fa-star" aria-hidden="true"></i></strong><span>Gana XP en cada consulta</span></div>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
             <div class="section-head"><div><h2 class="section-title">Consultas permanentes</h2><p class="section-desc">Cada tema es una consulta independiente: puedes votar en varias y ganar los XP correspondientes sin duplicar votos.</p></div></div>
             <div class="participa-guide"><div><i class="fa-solid fa-check-double"></i><strong>Una vez por consulta</strong><span>Cada nuevo ámbito te permite volver a participar y ganar XP.</span></div><div><i class="fa-solid fa-rotate"></i><strong>Edita si cambias de opinión</strong><span>Los cambios sustituyen tu voto anterior y no suman XP de nuevo.</span></div></div><div id="consultasGrid" class="cards"></div>
           </div>
-          <div id="view-resultados" class="view"><div class="section-head"><div><h2 class="section-title">Resultados de la comunidad</h2><p class="section-desc">Descubre las preferencias de los participantes, agrupadas y sin revelar identidades ni respuestas escritas.</p></div></div><div class="panel results-toolbar"><div class="field"><label for="resultsConsulta">Selecciona una consulta</label><select id="resultsConsulta"></select></div><button type="button" id="resultsRefresh" class="btn soft"><i class="fa-solid fa-rotate"></i> Actualizar</button></div><p class="results-live-note"><i class="fa-solid fa-arrows-rotate"></i> Actualización automática cada 15 segundos. Para proteger la privacidad, las tendencias aparecen desde 3 participantes.</p><div id="resultsSummary" class="results-summary" aria-live="polite"></div><div id="resultsGrid" class="results-dashboard" aria-live="polite"></div></div>
+          <div id="view-resultados" class="view"><div class="section-head"><div><h2 class="section-title">Resultados de la comunidad</h2><p class="section-desc">Descubre las preferencias de los participantes, agrupadas y sin revelar identidades ni respuestas escritas.</p></div></div><div class="panel results-toolbar"><div class="field"><label for="resultsConsulta">Selecciona una consulta</label><select id="resultsConsulta"></select></div><button type="button" id="resultsRefresh" class="btn soft"><i class="fa-solid fa-rotate"></i> Actualizar</button></div><p class="results-live-note"><i class="fa-solid fa-arrows-rotate"></i> Las preferencias se actualizan automáticamente cada 15 segundos. Solo se muestran tendencias agrupadas cuando hay información suficiente.</p><div id="resultsSummary" class="results-summary" aria-live="polite"></div><div id="resultsGrid" class="results-dashboard" aria-live="polite"></div></div>
           <div id="view-miperfil" class="view">
             <div class="section-head"><div><h2 class="section-title">Mi participación</h2><p class="section-desc">Resumen de tu actividad dentro de PARTICIPA.</p></div></div>
             <div id="miPanel" class="panel"></div>
@@ -111,6 +111,6 @@
   <div id="toast" class="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261024-permanente-v1"></script><script src="resultados.js?v=20261024-v1"></script>
+  <script src="app.js?v=20261024-porcentajes-v2"></script><script src="resultados.js?v=20261024-porcentajes-v2"></script>
 </body>
 </html>

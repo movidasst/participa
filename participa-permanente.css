@@ -112,3 +112,7 @@ body{background:radial-gradient(circle at 0% -8%,rgba(0,123,133,.13),transparent
 @media(min-width:760px){body{padding-bottom:0}.mobile-nav{display:none}}
 @media(max-width:360px){.login-card{padding:15px 12px}.participa-login-steps span{font-size:.72rem;padding:8px 2px}.avatar{width:32px;height:32px}.mobile-nav button{font-size:.63rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Resultados porcentuales: mensajes neutros sin contadores. */
+#appView .hero-kpi strong i{font-size:1.5rem;color:#b5fcf4}
+#appView .hero-kpi span{font-size:.75rem;line-height:1.35;display:block}
