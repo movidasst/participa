@@ -1,29 +1,123 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resultados | La Movida de SST+</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"><style>
-:root{--navy:#00205b;--teal:#007b85;--line:#dce8ed}*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#18304b;font:16px Outfit,sans-serif}.wrap{max-width:1040px;padding:0 18px;margin:auto}.barhead{background:#fff;border-bottom:1px solid var(--line)}.barhead .wrap{min-height:75px;display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{width:auto;max-width:150px;max-height:54px}h1{font-size:clamp(1.6rem,4vw,2.3rem);color:var(--navy)}h2{color:var(--navy);font-size:1.2rem}p{line-height:1.5;color:#52677b}.card{background:#fff;border:1px solid var(--line);padding:19px;border-radius:18px;margin:18px 0}.btn{background:var(--teal);color:white;border:0;border-radius:10px;padding:12px 16px;font:700 15px Outfit;cursor:pointer}a{color:var(--teal)}.hidden{display:none!important}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.metric{padding:18px;background:#eaf7f6;border-radius:14px}.metric strong{font-size:1.9rem;display:block;color:var(--navy)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}.result{margin:13px 0}.resultline{display:flex;justify-content:space-between;gap:12px;font-size:.85rem}.track{background:#e5eff1;height:8px;border-radius:20px;overflow:hidden;margin-top:5px}.fill{height:100%;background:var(--teal)}.item{padding:12px;border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow-wrap:anywhere}.item small{color:#60758a}
-</style></head><body><header class="barhead"><div class="wrap"><a href="index.html"><img class="logo" src="https://www.movidasst.com/logo-oficial-movida-sst-plus.png" alt="La Movida de SST+"></a><b>PARTICIPA · ADMINISTRACIÓN</b></div></header><main class="wrap"><h1>Consulta comercial de La Movida</h1><p>Resultados sobre soluciones profesionales, precios, membresía y programa de promotores. Solo administración autorizada.</p><section id="access" class="card hidden"><h2>Acceso protegido</h2><p>Primero ingresa con tu cuenta de Gestión en el panel administrativo existente y luego regresa aquí.</p><a href="admin.html">Ir al acceso administrativo</a></section><section id="dashboard" class="hidden"><button class="btn" id="reload">Actualizar resultados</button><div id="summary" class="summary" style="margin-top:14px"></div><div id="charts" class="grid"></div><div class="card"><h2>Propuestas de productos y herramientas</h2><div id="ideas"></div></div><div class="card"><h2>Contactos voluntarios de posibles promotores</h2><p>Datos privados, únicamente para responder a su solicitud de información.</p><div id="contacts"></div></div></section><p id="notice"></p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+:root{--navy:#00205b;--teal:#007b85;--line:#dce8ed}*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#18304b;font:16px Outfit,sans-serif}.wrap{max-width:1040px;padding:0 18px;margin:auto}.barhead{background:#fff;border-bottom:1px solid var(--line)}.barhead .wrap{min-height:75px;display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{width:auto;max-width:205px;max-height:62px}.headright{display:flex;align-items:center;gap:14px}.headright b{font-size:.83rem}.social{display:flex;gap:7px}.social a{display:grid;place-items:center;background:#eefaf8;border:1px solid #c6e8e4;border-radius:10px;width:36px;height:36px}.social svg{width:20px;height:20px;fill:none;stroke:var(--teal);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}@media(max-width:560px){.logo{max-width:145px}.headright{flex-direction:column-reverse;gap:4px;align-items:flex-end}.headright b{font-size:.69rem}.social a{width:32px;height:32px}.social svg{width:18px;height:18px}}h1{font-size:clamp(1.6rem,4vw,2.3rem);color:var(--navy)}h2{color:var(--navy);font-size:1.2rem}p{line-height:1.5;color:#52677b}.card{background:#fff;border:1px solid var(--line);padding:19px;border-radius:18px;margin:18px 0}.btn{background:var(--teal);color:white;border:0;border-radius:10px;padding:12px 16px;font:700 15px Outfit;cursor:pointer}a{color:var(--teal)}.hidden{display:none!important}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.metric{padding:18px;background:#eaf7f6;border-radius:14px}.metric strong{font-size:1.9rem;display:block;color:var(--navy)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}.result{margin:13px 0}.resultline{display:flex;justify-content:space-between;gap:12px;font-size:.85rem}.track{background:#e5eff1;height:8px;border-radius:20px;overflow:hidden;margin-top:5px}.fill{height:100%;background:var(--teal)}.item{padding:12px;border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow-wrap:anywhere}.item small{color:#60758a}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.btn:disabled{opacity:.55;cursor:wait}.item strong{display:block;color:var(--navy)}.item p{margin:7px 0}
+</style></head><body><header class="barhead"><div class="wrap"><a href="index.html"><img class="logo" src="https://www.movidasst.com/logo-horizontal-movida-sst-plus.webp" alt="La Movida de SST+"></a><div class="headright"><nav class="social" aria-label="Redes sociales de La Movida">
+<a href="https://whatsapp.com/channel/0029Va0mlH5Jf05mrcCz8r3e" target="_blank" rel="noopener noreferrer" title="Canal WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 11.4a8.2 8.2 0 0 1-11.7 7.3L3 20l1.5-5.3a8.2 8.2 0 1 1 15.8-3.3Z"/><path d="M8.8 7.7c-.4-.2-.7.1-1 .6-.8 1.1-.4 2.2.3 3.4 1.2 2.2 3 3.8 5.3 4.5 1.2.4 2.1.3 2.7-.6.3-.4.3-1.1-.2-1.3l-1.9-.9-.9 1.1c-1.7-.6-2.7-1.7-3.3-3.1l1-.8-.9-2Z"/></svg></a>
+<a href="https://www.instagram.com/movidasst/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg></a>
+<a href="https://www.linkedin.com/in/davidlinaresbrea" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7m0-10v.25M12 17v-7m0 3c0-4 6-4 6 0v4"/></svg></a>
+</nav><b>PARTICIPA · ADMINISTRACIÓN</b></div></div></header><main class="wrap"><h1>Consulta comercial de La Movida</h1><p>Resultados sobre soluciones profesionales, precios, membresía y programa de promotores. Solo administración autorizada.</p><section id="access" class="card hidden"><h2>Acceso protegido</h2><p>Primero ingresa con tu cuenta de Gestión en el panel administrativo existente y luego regresa aquí.</p><a href="admin.html">Ir al acceso administrativo</a></section><section id="dashboard" class="hidden"><div class="toolbar"><button class="btn" id="reload">Actualizar resultados</button><button class="btn" id="excel" type="button" style="background:var(--navy)">Descargar todo en Excel (.xlsx)</button></div><div id="summary" class="summary" style="margin-top:14px"></div><div id="charts" class="grid"></div><div class="card"><h2>Propuestas de productos y herramientas</h2><div id="ideas"></div></div><div class="card"><h2>Directorio privado de participantes</h2><p>Nombre, correo, WhatsApp, país e interés comercial de todos los participantes. Úsalos únicamente para los fines autorizados.</p><div id="contacts"></div></div></section><p id="notice"></p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 (function(){
 "use strict";
-var sb=window.supabase.createClient("https://lfdmbkzghnwvsapxypvt.supabase.co","sb_publishable_bRnkA6PA8-v073nrw9zxiQ_8rVGiOn1",{auth:{storageKey:"movidasst_participa_admin_auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-var $=function(id){return document.getElementById(id)};
-function node(tag,cls,val){var n=document.createElement(tag);if(cls)n.className=cls;if(val!==undefined)n.textContent=String(val);return n}
-function aggregate(rows,key){var counts={};rows.forEach(function(r){var v=r.respuestas[key];(Array.isArray(v)?v:[v]).forEach(function(x){if(x)counts[x]=(counts[x]||0)+1})});return Object.entries(counts).sort(function(a,b){return b[1]-a[1]})}
-function render(rows,total){
- var stats=[["Respuestas",total],["Interés en referidos",rows.filter(function(r){return r.respuestas.referidos==="Sí"||r.respuestas.referidos==="Quizás"}).length],["Contactos con permiso",rows.filter(function(r){return r.consentimiento_contacto&&(r.contacto_email||r.contacto_whatsapp)}).length]];
- $("summary").replaceChildren();stats.forEach(function(s){var d=node("div","metric");d.append(node("strong","",s[1]),node("span","",s[0]));$("summary").appendChild(d)});
- $("charts").replaceChildren();[["productos","Productos"],["precio","Precio por kit"],["membresia","Membresía"],["motivo","Razón para comprar"],["referidos","Promotores"],["comision","Comisión"],["canales","Canales"],["pais","País"]].forEach(function(conf){
- var tile=node("section","card");tile.appendChild(node("h2","",conf[1]));var groups=aggregate(rows,conf[0]);var n=rows.filter(function(r){var v=r.respuestas[conf[0]];return Array.isArray(v)?v.length:!!v}).length;
- if(!groups.length)tile.appendChild(node("p","","Sin respuestas todavía"));
- groups.forEach(function(pair){var pct=n?Math.round(100*pair[1]/n):0,d=node("div","result"),line=node("div","resultline"),track=node("div","track"),fill=node("div","fill");line.append(node("span","",pair[0]),node("span","",pair[1]+" · "+pct+" %"));fill.style.width=Math.min(100,pct)+"%";track.appendChild(fill);d.append(line,track);tile.appendChild(d)});$("charts").appendChild(tile)});
- $("ideas").replaceChildren();$("contacts").replaceChildren();
- rows.forEach(function(r){if(r.respuestas.necesidad){var d=node("div","item");d.append(node("small","",r.respuestas.pais||"País no indicado"),node("p","",r.respuestas.necesidad));$("ideas").appendChild(d)}
- if(r.consentimiento_contacto&&(r.contacto_email||r.contacto_whatsapp)){var c=node("div","item");c.append(node("strong","",r.respuestas.referidos),node("p","",[r.contacto_email,r.contacto_whatsapp].filter(Boolean).join(" · ")),node("small","",r.respuestas.pais||"País no indicado"));$("contacts").appendChild(c)}});
- if(!$("ideas").children.length)$("ideas").append(node("p","","Aún no hay propuestas."));
- if(!$("contacts").children.length)$("contacts").append(node("p","","Aún no hay contactos autorizados."));
+const sb=window.supabase.createClient("https://lfdmbkzghnwvsapxypvt.supabase.co","sb_publishable_bRnkA6PA8-v073nrw9zxiQ_8rVGiOn1",{auth:{storageKey:"movidasst_participa_admin_auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+const $=id=>document.getElementById(id);
+const node=(tag,cls,val)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(val!==undefined)n.textContent=String(val);return n};
+let rows=[],total=0;
+function aggregate(list,key){
+ const counts={};list.forEach(r=>{const v=r.respuestas?.[key];(Array.isArray(v)?v:[v]).forEach(x=>{if(x)counts[x]=(counts[x]||0)+1})});
+ return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
-async function load(){try{
- var result=await sb.rpc("participa_mercado_panel");if(result.error)throw result.error;if(!result.data||!result.data.ok)throw Error("Sin permisos");render(result.data.respuestas||[],result.data.total||0);$("notice").textContent="";
- }catch(e){$("notice").textContent="No se pudieron obtener los resultados. Verifica tus permisos de Gestión."}}
-$("reload").addEventListener("click",load);
-sb.auth.getSession().then(function(x){if(x.data.session){$("dashboard").classList.remove("hidden");load()}else{$("access").classList.remove("hidden")}}).catch(function(){$("access").classList.remove("hidden")});
+function render(list,count){
+ const metrics=[["Respuestas registradas",count],["Interesados en referidos",list.filter(r=>["Sí","Quizás"].includes(r.respuestas?.referidos)).length],["Contactos captados",list.filter(r=>r.nombre_completo&&r.contacto_email&&r.contacto_whatsapp).length]];
+ $("summary").replaceChildren();
+ metrics.forEach(entry=>{const d=node("div","metric");d.append(node("strong","",entry[1]),node("span","",entry[0]));$("summary").appendChild(d)});
+ $("charts").replaceChildren();
+ const items=[["productos","Productos de interés"],["precio","Precio por kit"],["membresia","Membresía"],["motivo","Principal motivo"],["referidos","Interés en promotores"],["comision","Comisión preferida"],["canales","Dónde promocionarían"],["pais","País"]];
+ items.forEach(cfg=>{
+  const tile=node("section","card");tile.appendChild(node("h2","",cfg[1]));
+  const groups=aggregate(list,cfg[0]);const n=list.filter(r=>{const v=r.respuestas?.[cfg[0]];return Array.isArray(v)?v.length:!!v}).length;
+  if(!groups.length)tile.appendChild(node("p","","Sin respuestas todavía."));
+  groups.forEach(pair=>{const pct=n?Math.round(100*pair[1]/n):0,d=node("div","result"),line=node("div","resultline"),track=node("div","track"),fill=node("div","fill");line.append(node("span","",pair[0]),node("span","",pair[1]+" · "+pct+" %"));fill.style.width=Math.min(100,pct)+"%";track.appendChild(fill);d.append(line,track);tile.appendChild(d)});
+  $("charts").appendChild(tile);
+ });
+ $("ideas").replaceChildren();$("contacts").replaceChildren();
+ list.forEach(r=>{
+  const a=r.respuestas||{};
+  if(a.necesidad){const d=node("div","item");d.append(node("small","",r.nombre_completo||a.pais||"Sin nombre"),node("p","",a.necesidad));$("ideas").appendChild(d)}
+  const c=node("div","item"),who=node("strong","",r.nombre_completo||"Registro anterior");
+  c.append(who,node("p","",[r.contacto_email,r.contacto_whatsapp].filter(Boolean).join(" · ")||"Sin contacto registrado"),node("small","",[a.pais||"Sin país","Referidos: "+(a.referidos||"No indicado"),"Membresía: "+(a.membresia||"No indicado")].join(" · ")));
+  $("contacts").appendChild(c);
+ });
+ if(!$("ideas").children.length)$("ideas").append(node("p","","Aún no hay propuestas."));
+ if(!$("contacts").children.length)$("contacts").append(node("p","","Aún no hay participantes."));
+}
+async function fetchAll(){
+ const all=[];let offset=0,expected=0;
+ do {
+  const {data,error}=await sb.rpc("participa_mercado_panel",{p_offset:offset,p_limit:500});
+  if(error)throw error;
+  if(!data?.ok)throw Error(data?.message||"Acceso no autorizado");
+  expected=Number(data.total||0);
+  const batch=data.respuestas||[];
+  all.push(...batch);
+  offset+=batch.length;
+  if(!batch.length)break;
+ }while(offset<expected);
+ return {all,expected};
+}
+async function load(){
+ $("reload").disabled=true;$("notice").textContent="Cargando respuestas…";
+ try{const x=await fetchAll();rows=x.all;total=x.expected;render(rows,total);$("notice").textContent=rows.length===total?"":"Se cargaron "+rows.length+" de "+total+" respuestas; prueba actualizar."}
+ catch(e){console.error(e);$("notice").textContent="No se pudieron obtener los resultados. Comprueba los permisos de Gestión."}
+ finally{$("reload").disabled=false}
+}
+function textValue(v){if(Array.isArray(v))return v.join("; ");return v==null?"":String(v)}
+function safeCell(v){let s=textValue(v);return /^[=+\-@\t\r]/.test(s)?"'"+s:s}
+async function ensureExcel(){
+ if(window.ExcelJS)return;
+ await new Promise((resolve,reject)=>{
+  const script=document.createElement("script");
+  script.src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js";
+  script.onload=()=>window.ExcelJS?resolve():reject(Error("Biblioteca Excel no disponible"));
+  script.onerror=()=>reject(Error("No se pudo cargar la biblioteca Excel"));
+  document.head.appendChild(script);
+ });
+}
+async function downloadExcel(){
+ const button=$("excel");button.disabled=true;const before=button.textContent;button.textContent="Preparando archivo…";$("notice").textContent="";
+ try{
+  const fetched=await fetchAll();
+  if(fetched.all.length!==fetched.expected)throw Error("No se pudo descargar el conjunto completo de respuestas.");
+  rows=fetched.all;total=fetched.expected;render(rows,total);
+  await ensureExcel();
+  const book=new ExcelJS.Workbook();book.creator="La Movida de SST+";book.subject="Consulta de mercado SST - respuestas privadas";
+  const sheet=book.addWorksheet("Participantes");
+  const headers=["Fecha de respuesta","Nombre y apellido","Correo electrónico","WhatsApp","País","Productos de interés","Precio kit","Membresía","Motivo principal","Interés en referidos","Tipo comisión","Canales","Propuesta libre","Autorizó contacto"];
+  sheet.addRow(headers);
+  rows.forEach(r=>{
+    const a=r.respuestas||{};
+    sheet.addRow([new Date(r.creado_at).toLocaleString("es-CL"),safeCell(r.nombre_completo),safeCell(r.contacto_email),safeCell(r.contacto_whatsapp),safeCell(a.pais),safeCell(a.productos),safeCell(a.precio),safeCell(a.membresia),safeCell(a.motivo),safeCell(a.referidos),safeCell(a.comision),safeCell(a.canales),safeCell(a.necesidad),r.consentimiento_contacto?"Sí":"No"]);
+  });
+  sheet.views=[{state:"frozen",ySplit:1}];sheet.autoFilter={from:"A1",to:"N1"};
+  sheet.columns.forEach((col,i)=>{col.width=[21,27,32,20,17,38,17,24,28,21,23,33,48,21][i]});
+  const header=sheet.getRow(1);
+  header.height=28;
+  header.eachCell(cell=>{cell.font={bold:true,color:{argb:"FFFFFFFF"}};cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF00205B"}};cell.alignment={vertical:"middle",wrapText:true}});
+  sheet.getColumn(4).numFmt="@";
+  const summary=book.addWorksheet("Resumen");
+  summary.addRow(["Consulta comercial La Movida de SST+"]);
+  summary.mergeCells("A1:D1");summary.getCell("A1").font={bold:true,size:17,color:{argb:"FF00205B"}};
+  summary.addRow(["Total de respuestas",total]);
+  summary.addRow(["Personas interesadas en referidos",rows.filter(r=>["Sí","Quizás"].includes(r.respuestas?.referidos)).length]);
+  summary.addRow(["Fecha de exportación",new Date().toLocaleString("es-CL")]);
+  summary.addRow([]);
+  [["productos","Productos de interés"],["precio","Precio del kit"],["membresia","Membresía"],["motivo","Motivación"],["referidos","Referidos"],["comision","Comisión preferida"],["canales","Canales"],["pais","País"]].forEach(cfg=>{
+    summary.addRow([cfg[1],"Respuestas"]);
+    const sectionTitle=summary.lastRow;sectionTitle.eachCell(cell=>{cell.font={bold:true,color:{argb:"FFFFFFFF"}};cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF007B85"}}});
+    aggregate(rows,cfg[0]).forEach(pair=>summary.addRow(pair));
+    summary.addRow([]);
+  });
+  summary.getColumn(1).width=55;summary.getColumn(2).width=20;summary.getColumn(3).width=18;summary.getColumn(4).width=16;
+  const buffer=await book.xlsx.writeBuffer();const url=URL.createObjectURL(new Blob([buffer],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  const a=document.createElement("a");a.href=url;a.download="participa-consulta-comercial-movida-"+new Date().toISOString().slice(0,10)+".xlsx";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);$("notice").textContent="Archivo Excel preparado con "+rows.length+" respuestas.";
+ }catch(e){console.error(e);$("notice").textContent="No se pudo generar el Excel: "+(e.message||"error desconocido")}
+ finally{button.textContent=before;button.disabled=false}
+}
+$("reload").addEventListener("click",load);$("excel").addEventListener("click",downloadExcel);
+sb.auth.getSession().then(async x=>{
+ if(!x.data.session){$("access").classList.remove("hidden");return}
+ const result=await sb.rpc("participa_mercado_panel",{p_offset:0,p_limit:1});
+ if(result.error||!result.data?.ok){$("access").classList.remove("hidden");$("notice").textContent="La cuenta no está autorizada para consultar resultados.";return}
+ $("dashboard").classList.remove("hidden");await load();
+}).catch(()=>{$("access").classList.remove("hidden")});
 })();
 </script></body></html>
