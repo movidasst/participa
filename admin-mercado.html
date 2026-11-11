@@ -60,7 +60,7 @@ async function load(){
  finally{$("reload").disabled=false}
 }
 function textValue(v){if(Array.isArray(v))return v.join("; ");return v==null?"":String(v)}
-function safeCell(v){let s=textValue(v);return /^[=+\-@\t\r]/.test(s)?"'"+s:s}
+function safeCell(v){return textValue(v)}
 async function ensureExcel(){
  if(window.ExcelJS)return;
  await new Promise((resolve,reject)=>{
